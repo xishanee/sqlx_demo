@@ -1,6 +1,6 @@
 use std::{fmt::{format, Debug}, str::FromStr};
 
-use sqlx::types::BigDecimal;
+use sqlx::{encode::IsNull, types::BigDecimal,Database, Encode, Type, Postgres};
 
 pub struct HundredthTemperatureCelcius {
     pub value: BigDecimal
@@ -44,6 +44,25 @@ impl From<BigDecimal> for HundredthTemperatureCelcius {
         HundredthTemperatureCelcius { value }
     }
 }
+
+// The implementation of the Encode and Type trait for the HundredthTemperatureCelcius
+// enabled use to bind the Option<HundredthTemperatureCelcius> to the nullable numeric
+// in postgres database.
+impl<'r> Encode<'r, Postgres> for HundredthTemperatureCelcius {
+    fn encode_by_ref(
+            &self,
+            buf: &mut <Postgres as Database>::ArgumentBuffer<'r>,
+        ) -> Result<IsNull, sqlx::error::BoxDynError> {
+            self.value.clone().encode(buf)
+        }
+}
+
+impl Type<Postgres> for HundredthTemperatureCelcius {
+    fn type_info() -> <Postgres as Database>::TypeInfo {
+        <BigDecimal as Type<Postgres>>::type_info()
+    }
+}
+
 
 // The below code doesn't work because of the orphan rule.
 // impl From<Option<BigDecimal>> for Option<HundredthTemperatureCelcius> {

@@ -60,6 +60,7 @@ async fn main() {
         println!("device: {:?}", device)
     }
 
+    // It works
     // let insert_result = sqlx::query_as::<_, EntityId>(
     //     "insert into kres.device (device_type, tag, vendor) values($1, $2, $3) returning id")
     //     .bind(DeviceType::NGC20)
@@ -76,6 +77,7 @@ async fn main() {
         CompanyName().fake::<String>())
         .fetch_one(&pool)
         .await;
+
     let result = match insert_result {
         Ok(id) => id,
         Err(e) => {
@@ -102,7 +104,7 @@ async fn main() {
     }
 
     let temp = HundredthTemperatureCelcius::from_str("-125.00°C").unwrap();
-    let postConfig = Config {
+    let post_config = Config {
         id: 1,
         device_id: 1,
         control_temperature: Some(temp),
@@ -114,9 +116,10 @@ async fn main() {
         r#"insert into kres.config (device_id, control_temperature, temperature_low_alarm_enable) values($1, $2, $3)
         returning id, device_id, control_temperature, temperature_low_alarm_enable, created_at"#,
         )
-        .bind(postConfig.device_id)
-        .bind(postConfig.control_temperature.map(|t| t.value))
-        .bind(postConfig.temperature_low_alarm_enable)
+        .bind(post_config.device_id)
+        //.bind(post_config.control_temperature.map(|t| t.value))
+        .bind(post_config.control_temperature) // use this line instead of the above line requires the implementation of Trait (Type and Encode) for the HundredthTemperatureCelcius
+        .bind(post_config.temperature_low_alarm_enable)
         .fetch_one(&pool)
         .await;
 
@@ -142,8 +145,8 @@ async fn main() {
         eprintln!("Error fetching data from kes.config");
     }
 
-    let temp = HundredthTemperatureCelcius::from_str("-25.00°C").unwrap();
-    let postConfig = ConfigEx {
+    let temp = HundredthTemperatureCelcius::from_str("-35.00°C").unwrap();
+    let post_config = ConfigEx {
         device_id: 1,
         //control_temperature: Optional(None),
         control_temperature: Optional(Some(temp)),
@@ -153,9 +156,9 @@ async fn main() {
     let insert_result = sqlx::query_as!(
         EntityId,
         r#"insert into kres.config (device_id, control_temperature, temperature_low_alarm_enable) values($1, $2, $3) returning id"#,
-        postConfig.device_id,
-        postConfig.control_temperature.0.map(|t| t.value),
-        postConfig.temperature_low_alarm_enable)
+        post_config.device_id,
+        post_config.control_temperature.0.map(|t| t.value),
+        post_config.temperature_low_alarm_enable)
         .fetch_one(&pool)
         .await;
     let result = match insert_result {
