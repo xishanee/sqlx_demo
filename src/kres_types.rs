@@ -3,7 +3,7 @@ use std::{fmt::{format, Debug}, str::FromStr};
 use sqlx::{encode::IsNull, types::BigDecimal,Database, Encode, Type, Postgres};
 
 pub struct HundredthTemperatureCelcius {
-    pub value: BigDecimal
+    value: BigDecimal
 }
 
 impl ToString for HundredthTemperatureCelcius {
@@ -45,6 +45,12 @@ impl From<BigDecimal> for HundredthTemperatureCelcius {
     }
 }
 
+impl Into<BigDecimal> for HundredthTemperatureCelcius {
+    fn into(self) -> BigDecimal {
+        self.value
+    }
+}
+
 // The implementation of the Encode and Type trait for the HundredthTemperatureCelcius
 // enabled use to bind the Option<HundredthTemperatureCelcius> to the nullable numeric
 // in postgres database.
@@ -62,7 +68,6 @@ impl Type<Postgres> for HundredthTemperatureCelcius {
         <BigDecimal as Type<Postgres>>::type_info()
     }
 }
-
 
 // The below code doesn't work because of the orphan rule.
 // impl From<Option<BigDecimal>> for Option<HundredthTemperatureCelcius> {
@@ -100,3 +105,30 @@ impl <A,B> From<Option<A>> for Optional<B> where B: From<A> {
         }
     }
 }
+
+impl<A> From<Optional<A>> for Option<BigDecimal> where A: Into<BigDecimal> {
+    fn from(value: Optional<A>) -> Self {
+        match value.0 {
+            Some(val) => Some(val.into()),
+            None => None,
+        }
+    }
+}
+
+// impl Into<Option<BigDecimal>> for Optional<HundredthTemperatureCelcius> {
+//     fn into(self) -> Option<BigDecimal> {
+//         match self.0 {
+//             Some(val) => Some(val.into()),
+//             None => None,
+//         }
+//     }
+// }
+
+// impl From<Optional<HundredthTemperatureCelcius>> for Option<BigDecimal> {
+//     fn from(value: Optional<HundredthTemperatureCelcius>) -> Self {
+//         match value.0 {
+//             Some(val) => Some(val.into()),
+//             None => None,
+//         }
+//     }
+// }

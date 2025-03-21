@@ -7,7 +7,7 @@ use device::{Device, DeviceType, EntityId};
 use config::Config;
 use config_ex::ConfigEx;
 use kres_types::{HundredthTemperatureCelcius, Optional};
-use sqlx::postgres;
+use sqlx::{postgres, types::BigDecimal};
 use fake::{faker::{name::en::FirstName, company::en::CompanyName}, Fake};
 use std::str::FromStr;
 use dotenv::dotenv;
@@ -153,11 +153,12 @@ async fn main() {
         temperature_low_alarm_enable: Some(true),
     };
 
+    //let opt_temp:Option<BigDecimal> = post_config.control_temperature.into();
     let insert_result = sqlx::query_as!(
         EntityId,
         r#"insert into kres.config (device_id, control_temperature, temperature_low_alarm_enable) values($1, $2, $3) returning id"#,
         post_config.device_id,
-        post_config.control_temperature.0.map(|t| t.value),
+        <Optional<HundredthTemperatureCelcius> as Into<Option<BigDecimal>>>::into(post_config.control_temperature),
         post_config.temperature_low_alarm_enable)
         .fetch_one(&pool)
         .await;
