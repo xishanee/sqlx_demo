@@ -1,3 +1,7 @@
 /target
 .vscode
 .sqlx
+
+sqlx_driver_demo/target
+sqlx_driver_demo/.vscode
+sqlx_driver_demo/.sqlx
