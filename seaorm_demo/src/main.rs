@@ -1,5 +1,7 @@
 
 use sea_orm::{ConnectionTrait, Database, DatabaseConnection, DbBackend, DbErr, Statement};
+//use sea_orm_migration::prelude::*;
+use migration::{Migrator, MigratorTrait};
 
 const DBSERVER_URL: &str = "postgresql://postgres:123456@localhost:5432";
 const DB_NAME: &str = "seaorm_demo";
@@ -19,6 +21,7 @@ async fn main() {
         }
     };
     db.ping().await.expect("Failed to ping database");
+    Migrator::up(&db, None).await.expect("Failed to run migrations");
     //println!("Database connected: {:?}", db);
     db.close().await.expect("Failed to close database");
 }
