@@ -2,7 +2,6 @@
 members=[
     "sqlx_driver_demo",
     "seaorm_demo",
-    "seaorm_demo/migration"
 ]
 
 resolver="3"

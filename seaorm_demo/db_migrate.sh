@@ -12,6 +12,6 @@ fi
 # Run migrations
 echo "Running database migrations..."
 #sea-orm-cli migrate init --database-url "$DATABASE_URL" --database-schema kres
-sea-orm-cli migrate refresh --database-url "$DATABASE_URL" --database-schema public
+sea-orm-cli migrate refresh --database-url "$DATABASE_URL" --database-schema kres
 
 echo "Database migrations completed successfully."
