@@ -1466,6 +1466,7 @@ name = "migration"
 version = "0.1.0"
 dependencies = [
  "async-std",
+ "entities",
  "sea-orm-migration",
 ]
 

@@ -1,4 +1,5 @@
-use sea_orm_migration::prelude::*;
+use sea_orm_migration::{prelude::*, sea_orm::ActiveEnum};
+use entities::sea_orm_active_enums::DeviceType;
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;
@@ -10,19 +11,19 @@ impl MigrationTrait for Migration {
             .into_table((Device::Schema, Device::Table))
             .columns([Device::DeviceType, Device::Tag, Device::Vendor])
             .values_panic([
-                "ngc20".into(),
+                DeviceType::Ngc20.as_enum(DeviceType::name()),
                 "NGC20".into(),
-                "NVIDIA".into(),
+                "nVent".into(),
             ])
             .values_panic([
-                "elexant5010i".into(),
+                DeviceType::Elexant5010i.as_enum(DeviceType::name()),
                 "ELEXANT5010I".into(),
-                "NVIDIA".into(),
+                "Chemelex".into(),
             ])
             .values_panic([
-                "elexant40x0i".into(),
+                DeviceType::Elexant40x0i.as_enum(DeviceType::name()),
                 "ELEXANT40X0I".into(),
-                "NVIDIA".into(),
+                "Chemelex".into(),
             ])
             .to_owned();
 

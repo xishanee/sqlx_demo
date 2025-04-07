@@ -75,6 +75,23 @@ enum Device {
     CreatedAt,
 }
 
+/*
+ * DeviceType enum
+ * (1) This is the enum type created manually for the TYPE statement to
+ * create the enum type in the database.
+ * (2) There is another enum type 'DeviceType' in the
+ * ../../entities/src/sea_orm_active_enums.rs which is generated
+ * by sea-orm-codegen from the database.
+ *
+ * I did (1) first and then (2) later. They are the same thing but derives different traits,
+ * but it is not necessary to have both.
+ *
+ * The correct way is either of the following:
+ * (1) use the raw sql statement in migration code to create the enum type in database and
+ * then sea-orm-cli to generate the rust enum type from database.
+ * (2) define the rust enum type like the one in (2) and use it in migration code to create
+ * the enum type in database.
+ */
 #[derive(DeriveIden)]
 pub enum DeviceType {
     #[sea_orm(iden = "device_type")]
