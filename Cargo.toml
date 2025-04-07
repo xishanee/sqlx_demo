@@ -1,6 +1,5 @@
 [workspace]
 resolver="3"
-members=[
-    "sqlx_driver_demo",
-    "seaorm_demo",
-]
+members=["sqlx_driver_demo", "seaorm_demo"]
+[workspace.dependencies]
+tokio = { version = "1.44.0", features = ["full"] }

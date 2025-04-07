@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-tokio = { version = "1.44.0", features = ["full"] }
-sqlx = { version = "0.8.3", features = ["postgres", "runtime-tokio", "time", "bigdecimal"] }
+tokio = { workspace = true }
+sqlx = { version = "0.8.3", default-features = false, features = ["postgres", "derive", "runtime-tokio", "time","macros", "bigdecimal"] }
 time = "0.3.39"
-fake = { version = "2.6.1", features=['derive']}
+fake = { version = "2.6.1", default-features = false, features=['derive']}
 dotenv = "0.15.0"
