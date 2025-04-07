@@ -52,14 +52,15 @@ impl Into<BigDecimal> for HundredthTemperatureCelcius {
 }
 
 // The implementation of the Encode and Type trait for the HundredthTemperatureCelcius
-// enabled use to bind the Option<HundredthTemperatureCelcius> to the nullable numeric
-// in postgres database.
+// enables binding the Option<HundredthTemperatureCelcius> to the nullable numeric
+// column in postgres database.
 impl<'r> Encode<'r, Postgres> for HundredthTemperatureCelcius {
     fn encode_by_ref(
             &self,
             buf: &mut <Postgres as Database>::ArgumentBuffer<'r>,
         ) -> Result<IsNull, sqlx::error::BoxDynError> {
-            self.value.clone().encode(buf)
+            //self.value.clone().encode(buf)
+            <BigDecimal as sqlx::Encode<'_, Postgres>>::encode(self.value.clone(), buf)
         }
 }
 
