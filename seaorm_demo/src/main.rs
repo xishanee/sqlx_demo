@@ -6,7 +6,7 @@ use migration::{Migrator, MigratorTrait};
 const DBSERVER_URL: &str = "postgresql://postgres:123456@localhost:5432";
 const DB_NAME: &str = "seaorm_demo";
 
-mod entities;
+
 use entities::{device, sea_orm_active_enums::DeviceType};
 
 

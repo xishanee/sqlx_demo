@@ -8,3 +8,4 @@ tokio = { version = "1.44.0", features = ["full"] }
 sea-orm = {version = "1.1.7", features = ["sqlx-postgres", "runtime-tokio-rustls", "macros"]}
 sea-orm-cli = "=1.1.7"
 migration = { path = "./migration" }
+entities = {path = "./entities"}
