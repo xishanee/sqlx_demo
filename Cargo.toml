@@ -1,7 +1,6 @@
 [workspace]
+resolver="3"
 members=[
     "sqlx_driver_demo",
     "seaorm_demo",
 ]
-
-resolver="3"

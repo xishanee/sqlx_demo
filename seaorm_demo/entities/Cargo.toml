@@ -8,6 +8,5 @@ publish = false
 name = "entities"
 path = "src/mod.rs"
 
-[dependencies.sea-orm]
-version = "1.1.7"
-features = ["sqlx-postgres",]
+[dependencies]
+sea-orm = {version = "1.1.8", features = ["sqlx-postgres",]}
